@@ -1,11 +1,8 @@
-import React from 'react'
+import Products from '@/components/admin/Products'
+
 
 const Product = () => {
-  return (
-    <div>
-      products
-    </div>
-  )
+  return <Products/>
 }
 
 export default Product

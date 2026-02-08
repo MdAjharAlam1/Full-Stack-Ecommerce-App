@@ -1,11 +1,7 @@
-import React from 'react'
+import Orders from "@/components/admin/Orders"
 
-const Order = () => {
-  return (
-    <div>
-      order
-    </div>
-  )
+const OrderRouter = () => {
+  return <Orders/>
 }
 
-export default Order
+export default OrderRouter

@@ -1,94 +1,135 @@
 "use client"
-
 import React, { FC } from 'react';
 import {
-    CarryOutOutlined,
-  CreditCardFilled,
+  CarryOutOutlined,
   CreditCardOutlined,
-  DesktopOutlined,
-  FileOutlined,
+  CrownOutlined,
+  LogoutOutlined,
   OrderedListOutlined,
-  PieChartOutlined,
-  ProductOutlined,
-  TeamOutlined,
+  ProfileOutlined,
+  SettingOutlined,
   UserOutlined,
+
 } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+
+import { Avatar, Breadcrumb, Dropdown, Layout, Menu, theme } from 'antd';
 import ChildrenInterface from '@/interface/children.interface';
 import Link from 'next/link';
+import Logo from '../shared/Logo';
+import { usePathname } from 'next/navigation';
+import { signOut, useSession } from 'next-auth/react';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 
-type MenuItem = Required<MenuProps>['items'][number];
+const siderStyle: React.CSSProperties = {
+  overflow: 'auto',
+  height: '100vh',
+  position: 'sticky',
+  insetInlineStart: 0,
+  top: 0,
+  bottom: 0,
+  scrollbarWidth: 'thin',
+  scrollbarGutter: 'stable',
+};
 
-// function getItem(
-//   label: React.ReactNode,
-//   key: React.Key,
-//   icon?: React.ReactNode,
-//   children?: MenuItem[],
-// ): MenuItem {
-//   return {
-//     key,
-//     icon,
-//     children,
-//     label,
-//   } as MenuItem;
-// }
+const getBreadCrumb = (pathname:string)=>{
+  const pathSegments = pathname.split("/")
+  const breadcrumbItems = pathSegments.map((item)=>({
+    title: item
+  }))
+  return breadcrumbItems
+}
 
-// const items: MenuItem[] = [
-//   getItem('Option 1', '1', <PieChartOutlined />),
-//   getItem('Option 2', '2', <DesktopOutlined />),
-//   getItem('User', 'sub1', <UserOutlined />, [
-//     getItem('Tom', '3'),
-//     getItem('Bill', '4'),
-//     getItem('Alex', '5'),
-//   ]),
-//   getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-//   getItem('Files', '9', <FileOutlined />),
-// ];
 
 const AdminLayout:FC<ChildrenInterface> = ({children}) => {
-
-    const menus = [
-        {   
-            icon:<CarryOutOutlined/>,
-            label:<Link href="/admin/products">Products</Link>,
-            key:"products"
-        },
-        {   
-            icon:<OrderedListOutlined/>,
-            label:<Link href="/admin/order">Orders</Link>,
-            key:"orders"
-        },
-        {
-            icon:<CreditCardOutlined/>,
-            label:<Link href="/admin/payments">Payments</Link>,
-            key:"payments"
-        },
-        {
-            icon:<UserOutlined/>,
-            label:<Link href="/admin/user">Users</Link>,
-            key:"users"
-        }
-    ]
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  const pathname = usePathname()
+  const session = useSession()
+
+  const logout = async()=>{
+    await signOut()
+  }
+
+  const menus = [
+    {  
+      icon:<CarryOutOutlined/>,
+      label:<Link href="/admin/products">Products</Link>,
+      key:"products"
+    },
+    {   
+      icon:<OrderedListOutlined/>,
+      label:<Link href="/admin/order">Orders</Link>,
+      key:"orders"
+    },
+    {
+      icon:<CreditCardOutlined/>,
+      label:<Link href="/admin/payment">Payments</Link>,
+      key:"payments"
+    },
+    {
+      icon:<UserOutlined/>,
+      label:<Link href="/admin/users">Users</Link>,
+      key:"users"
+    }
+  ]
+  
+  const accountMenu ={
+    items:[
+      {
+        icon:<CrownOutlined/>,
+        label:<a className='capitalize text-center font-bold'>{session?.data?.user.role}</a>,
+        key:"role"
+      },
+
+      {
+        icon:<ProfileOutlined/>,
+        label:<a>{session?.data?.user.name}</a>,
+        key:"fullname"
+      },
+      {
+        icon:<LogoutOutlined/>,
+        label:<a onClick={logout}>Logout</a>,
+        key:"logout"
+      },
+      {
+        icon:<SettingOutlined/>,
+        label:<a>Settings</a>,
+        key:"settings"
+      }
+    ]
+  }
+
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sider>
+    <Layout hasSider>
+      <Sider style={siderStyle}>
+        <div className="demo-logo-vertical" />
         <Menu theme="dark" items={menus} />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} />
-        <Content style={{ margin: '0 16px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }} items={[{ title: 'User' }, { title: 'Bill' }]} />
+        <Header style={{ padding: 0, background: colorBgContainer }} className='flex items-center' >
+            <div className='px-8 flex items-center justify-between w-full'>
+                <Logo/>
+                <div>
+                  <Dropdown menu={accountMenu}>
+                    <Avatar
+                      size="large"
+                      src="/images/avt.avif"
+                    />
+                    
+                  </Dropdown>
+                </div>
+            </div>
+        </Header>
+        <Content style={{ margin: '24px 16px 0', overflow: 'initial' }} className='px-8 flex flex-col gap-6'>
+        <Breadcrumb
+          items={getBreadCrumb(pathname)}
+        />
           <div
             style={{
               padding: 24,
-              minHeight: 360,
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}

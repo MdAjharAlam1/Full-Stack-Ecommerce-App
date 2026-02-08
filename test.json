@@ -1,0 +1,66 @@
+{
+  "entity": "event",
+  "account_id": "acc_Olfaibht8NYJKY",
+  "event": "payment.captured",
+  "contains": [
+    "payment"
+  ],
+  "payload": {
+    "payment": {
+      "entity": {
+        "id": "pay_RPVot8SDTkI4LZ",
+        "entity": "payment",
+        "amount": 400000,
+        "currency": "INR",
+        "status": "captured",
+        "order_id": "order_RPVohfvNDa8FvQ",
+        "invoice_id": null,
+        "international": false,
+        "method": "card",
+        "amount_refunded": 0,
+        "refund_status": null,
+        "captured": true,
+        "description": "Bulk Product",
+        "card_id": "card_RPVou6IscDFXyb",
+        "card": {
+          "id": "card_RPVou6IscDFXyb",
+          "entity": "card",
+          "name": "",
+          "last4": "8228",
+          "network": "MasterCard",
+          "type": "credit",
+          "issuer": "HDFC",
+          "international": false,
+          "emi": true,
+          "sub_type": "business",
+          "token_iin": null
+        },
+        "bank": null,
+        "wallet": null,
+        "vpa": null,
+        "email": "ajharalam333@gmail.com",
+        "contact": "+918888888888",
+        "notes": {
+          "name": "Md Ajhar Alam",
+          "user": "68dff67e01ab436d3d3ed20f",
+          "orders": "{\"products\":[\"684303f6eb0b3a3998417e8a\"],\"discounts\":[20],\"prices\":[5000]}"
+        },
+        "fee": 14160,
+        "tax": 2160,
+        "error_code": null,
+        "error_description": null,
+        "error_source": null,
+        "error_step": null,
+        "error_reason": null,
+        "acquirer_data": {
+          "auth_code": "729043"
+        },
+        "emi_plan": null,
+        "created_at": 1759606301,
+        "reward": null,
+        "base_amount": 400000
+      }
+    }
+  },
+  "created_at": 1759606308
+}
